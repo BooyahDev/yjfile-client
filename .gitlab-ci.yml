@@ -1,0 +1,23 @@
+stages:
+  - build
+  - publish
+
+build:
+  stage: build
+  image: java:8-jdk
+  script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - ./gradlew shadowjar
+  artifacts:
+    paths:
+      - build/libs/*.jar
+
+publish:
+  stage: publish
+  image: maven:latest
+  script:
+    - GROUP=`cat README.md | grep group | sed 's/group=//g' | sed -e "s/[\r\n]\+//g"`
+    - ARTIFACT=`cat README.md | grep artifact | sed 's/artifact=//g' | sed -e "s/[\r\n]\+//g"`
+    - VERSION=`cat README.md | grep "Version:" | head -n 1 | sed "s/Version://g" | sed -e "s/[\r\n]\+//g"`
+    - ls -la build/libs
+    - mvn deploy:deploy-file -DgroupId=${GROUP} -DartifactId=${ARTIFACT} -Dversion=${VERSION} -Dfile=build/libs/${ARTIFACT}-all.jar -DgeneratePom=false -DgeneratePom=false -Durl="https://deploy:deploy123@nexus.yjsnpi.club/repository/maven-releases/"
