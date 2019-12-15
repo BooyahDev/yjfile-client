@@ -31,7 +31,7 @@ public class YJFileClient {
             for (Element element : elements) {
                 if (!element.attr("title").equals("Delete") &&
                         !element.attr("href").equals("../") && !element.attr("title").equals("Rename")){
-                    String img = element.attr("href").strip();
+                    String img = element.text();
                     if (img.endsWith("/")) {
                         img = img.substring(0, img.length() - 1);
                     }
