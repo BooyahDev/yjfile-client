@@ -11,9 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YJFileClient {
-    private final String baseUrl = "https://file.yjsnpi.club/";
+    private String baseUrl = "https://file.yjsnpi.club/";
     private String parentDir;
     private YJFileDirectory fileDirectory;
+
+    public YJFileClient(String baseUrl, String parentDir) throws YJFileClientException {
+        this.baseUrl = baseUrl;
+        this.parentDir = parentDir;
+        requestAPI();
+    }
 
     public YJFileClient(String parentDir) throws YJFileClientException {
         this.parentDir = parentDir;

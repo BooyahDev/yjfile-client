@@ -16,9 +16,9 @@ publish:
   stage: publish
   image: maven:latest
   script:
-    - GROUP=`cat README.md | grep group | sed 's/group=//g' | sed -e "s/[\r\n]\+//g"`
-    - ARTIFACT=`cat README.md | grep artifact | sed 's/artifact=//g' | sed -e "s/[\r\n]\+//g"`
-    - VERSION=`cat README.md | grep "Version:" | head -n 1 | sed "s/Version://g" | sed -e "s/[\r\n]\+//g"`
+    - GROUP=`cat README.md | grep group | sed 's/group=//g' | sed -e "s/[\r\n]\+//g" | sed -e "s/[ \t]*$//"`
+    - ARTIFACT=`cat README.md | grep artifact | sed 's/artifact=//g' | sed -e "s/[\r\n]\+//g" | sed -e "s/[ \t]*$//"`
+    - VERSION=`cat README.md | grep "Version:" | head -n 1 | sed "s/Version://g" | sed -e "s/[\r\n]\+//g" | sed -e "s/[ \t]*$//"`
     - ls -la build/libs
     - mvn deploy:deploy-file -DgroupId=${GROUP} -DartifactId=${ARTIFACT} -Dversion=${VERSION} -Dfile=build/libs/${ARTIFACT}-all.jar -DgeneratePom=false -DgeneratePom=false -Durl="https://mvn:mvn@maven.yjsnpi.club/"
     # - mvn deploy:deploy-file -DgroupId=${GROUP} -DartifactId=${ARTIFACT} -Dversion=${VERSION} -Dfile=build/libs/${ARTIFACT}-all.jar -DgeneratePom=false -DgeneratePom=false -Durl="https://deploy:deploy123@nexus.yjsnpi.club/repository/maven-releases/"
